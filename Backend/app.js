@@ -2,9 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const authRouter = require('./Routes/authRoute');
 const quizRouter = require('./Routes/quizRoute');
 const pollRouter = require('./Routes/pollRoute');
 const userRouter = require('./Routes/userRoute');
+ 
 
 const app = express();
 
@@ -24,6 +26,7 @@ app.get('/', (req, res) => {
   res.status(200).json('Welcome to the quizze server!');
 });
 
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/quizzes', quizRouter);
 app.use('/api/v1/polls', pollRouter);
 app.use('/api/v1/users', userRouter);
