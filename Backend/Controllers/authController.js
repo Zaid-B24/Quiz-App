@@ -45,21 +45,31 @@ exports.register = catchAsync(async(req,res) => {
 });
 
 exports.auth = catchAsync(async (req, res, next) => {
-    if (!req.headers.authorization) {
-      return next(
-        new AppError('You are not authorized to access this resource.', 403)
-      );
-    }
-  
-    const token = req.headers.authorization.split(' ')[1];
-    const decoded = await jwt.verify(token, process.env.JWT_EXPIRY)
-    const user = await User.findOne({ _id: decoded.id });
-  
-    if (!user) {
-      return next(new AppError('User not found', 400));
-    }
-  
-    req.user = user;
-  
-    next();
-  });
+  if (!req.headers.authorization) {
+    return next(
+      new AppError('Authorization header missing. You are not authorized to access this resource.', 403)
+    );
+  }
+
+  if (!req.headers.authorization.startsWith('Bearer ')) {
+    return next(
+      new AppError('Authorization format is Bearer <token>.', 403)
+    );
+  }
+
+  const token = req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return next(new AppError('JWT token must be provided.', 403));
+  }
+
+  const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+  const user = await User.findOne({ _id: decoded.id });
+
+  if (!user) {
+    return next(new AppError('User not found', 400));
+  }
+  req.user = user;
+  next();
+});
+

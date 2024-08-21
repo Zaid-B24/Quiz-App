@@ -13,10 +13,7 @@ process.on('uncaughtException', err => {
 
 async function connectToDB() {
   try {
-    await mongoose.connect(process.env.DATABASE_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    await mongoose.connect(process.env.DATABASE_URL);
     console.log('Connected to DB');
   } catch (err) {
     console.error('Error connecting to DB:', err.message);

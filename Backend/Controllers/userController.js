@@ -4,13 +4,17 @@ const catchAsync = require('../utils/catchAsync');
 
 exports.getTrendings = catchAsync(async (req, res) => {
     const userId = req.user.id;
-  
-    // Aggregate quizzes and polls together, sort by impressions, and limit the results
+    if(!userId) {
+      console.log('no or incorrect userId');
+      res.status(404).json({
+        status:'invalid or no userId',
+      })
+    }
     const docs = await Quiz.aggregate([
       { $match: { createdBy: userId } },
       { $unionWith: { coll: 'polls', pipeline: [{ $match: { createdBy: userId } }] } },
       { $sort: { impressions: -1 } },
-      { $limit: 10 } // Adjust this limit based on your needs
+      { $limit: 10 } 
     ]);
   
     res.status(200).json({
@@ -81,7 +85,7 @@ exports.getTrendings = catchAsync(async (req, res) => {
   });
 
 exports.getUsersPollsAndQuizzes = catchAsync(async (req,res) => {
-    const userId = req. user.id;
+    const userId = req.user.id;
 
     const docs = await Quiz.aggregate([
         {$match: {createdBy: userId}},
@@ -97,7 +101,7 @@ exports.getUsersPollsAndQuizzes = catchAsync(async (req,res) => {
     res.status(200).json({
         stats:'success',
         results: docs.length,
-        data: {data}
+        data: {docs}
     });
 });
   

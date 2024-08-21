@@ -32,31 +32,77 @@ exports.getUsersPolls = catchAsync(async (req, res) => {
     data: { polls }
   });
 });
-
 exports.addPoll = catchAsync(async (req, res, next) => {
   const { name, questions } = req.body;
+
+  // Validate that name and questions are provided and questions is an array
   if (!name || !Array.isArray(questions) || questions.length === 0) {
     return next(new AppError('Name and a non-empty questions array must be provided', 400));
   }
 
+  // Validate each question
   for (const question of questions) {
-    if (!question.text || !Array.isArray(question.options) || question.options.length === 0) {
+    // Check if each question has text and a non-empty options array
+    if (!question.question || !Array.isArray(question.options) || question.options.length === 0) {
       return next(new AppError('Each question must have text and a non-empty options array', 400));
+    }
+    
+    // Validate options
+    for (const option of question.options) {
+      // Validate if the options match the optionsType
+      if (question.optionsType === 'text' && !option.text) {
+        return next(new AppError('Text option is required when optionsType is text', 400));
+      }
+      if (question.optionsType === 'image' && !option.image) {
+        return next(new AppError('Image option is required when optionsType is image', 400));
+      }
+      if (question.optionsType === 'textAndImage') {
+        // Either text or image should be provided
+        if (!option.text && !option.image) {
+          return next(new AppError('Either text or image is required when optionsType is textAndImage', 400));
+        }
+      }
     }
   }
 
+  // Create the poll
   const poll = await Poll.create({
     name,
     questions,
     createdBy: req.user.id,
   });
 
-  
   res.status(200).json({
     status: 'success',
     data: { poll }
   });
 });
+
+
+// exports.addPoll = catchAsync(async (req, res, next) => {
+//   const { name, questions } = req.body;
+//   if (!name || !Array.isArray(questions) || questions.length === 0) {
+//     return next(new AppError('Name and a non-empty questions array must be provided', 400));
+//   }
+
+//   for (const question of questions) {
+//     if (!question.text || !Array.isArray(question.options) || question.options.length === 0) {
+//       return next(new AppError('Each question must have text and a non-empty options array', 400));
+//     }
+//   }
+
+//   const poll = await Poll.create({
+//     name,
+//     questions,
+//     createdBy: req.user.id,
+//   });
+
+  
+//   res.status(200).json({
+//     status: 'success',
+//     data: { poll }
+//   });
+// });
 
 
 // Update a poll (only by its creator)
