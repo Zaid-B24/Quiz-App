@@ -1,0 +1,13 @@
+.quizType,
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions > button,
+.quizType > button {
+  flex: 1;
+}

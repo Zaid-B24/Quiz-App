@@ -1,0 +1,8 @@
+.stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.stats > div {
+  flex: 1;
+}

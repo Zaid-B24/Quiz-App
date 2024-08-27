@@ -1,0 +1,17 @@
+.container {
+  background-color: var(--neutral-color);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: rgba(149, 157, 165, 0.15) 0px 3px 6px 0px;
+  text-align: center;
+}
+
+.number {
+  font-size: 3.5rem;
+  font-weight: 700;
+}
+
+.text {
+  font-size: 1.5rem;
+  font-weight: 500;
+}

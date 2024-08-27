@@ -11,18 +11,18 @@ const { auth } = require('../Controllers/authController');
 
 const router = express.Router();
 
-router.use(auth);
+
 
 router
   .route('/')
-  .post(addPoll)
-  .get(getUsersPolls);
+  .post(auth,addPoll)
+  .get(auth,getUsersPolls);
 
 router
   .route('/:id')
   .get(getPoll)
-  .patch(updatePoll)
-  .delete(deletePoll);
+  .patch(auth,updatePoll)
+  .delete(auth,deletePoll);
 router.route('/attempt/:id').patch(attemptPoll);
 
 module.exports = router;

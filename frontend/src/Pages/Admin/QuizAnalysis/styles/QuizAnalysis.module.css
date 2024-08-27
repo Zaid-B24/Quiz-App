@@ -1,0 +1,28 @@
+.headers {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .meta {
+    color: red;
+  }
+  
+  .questions {
+    margin-top: 4rem;
+  }
+  
+  .divider {
+    border: 2px solid rgb(202, 202, 202);
+    margin: 3rem 0;
+  }
+  
+  .statsCards {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .statsCards > div {
+    flex: 1;
+  }
+  

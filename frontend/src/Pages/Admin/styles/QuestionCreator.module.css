@@ -1,0 +1,24 @@
+.children {
+  margin-top: 2rem;
+  display: flex;
+  gap: 3rem;
+}
+
+.optionsTypeGroup {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.optionTypes {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.optionTypes > div {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}

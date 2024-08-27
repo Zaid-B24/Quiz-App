@@ -1,0 +1,57 @@
+.container {
+  background-color: var(--neutral-color);
+  padding: 1rem;
+  margin: 2rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 1.5rem; /* Increased gap between tabs */
+  justify-content: center;
+}
+
+.tab {
+  padding: 0.5rem 1rem; /* Add padding for better touch targets */
+  border-radius: 6px; /* Rounded corners for tabs */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.tab:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover effect */
+}
+
+.tab:focus {
+  outline: none;
+}
+
+.container > div {
+  margin-bottom: 2rem;
+}
+
+.image {
+  text-align: center;
+  height: 2rem;
+}
+
+.image img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .container {
+    margin: 4rem;
+  }
+
+  .image {
+    height: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    margin: 4rem 6rem;
+  }
+}

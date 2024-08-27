@@ -1,0 +1,29 @@
+.container {
+  background-color: var(--neutral-color);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  height: 100%;
+}
+
+.image {
+  max-height: 3rem;
+}
+
+.image img {
+  height: 100%;
+  object-fit: contain;
+}
+
+.navs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.button {
+  border-top: 2px solid;
+  padding-top: 1rem;
+}

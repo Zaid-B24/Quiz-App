@@ -2,106 +2,83 @@ const Quiz = require('../Models/QnAModel');
 const Poll = require('../Models/pollModel');
 const catchAsync = require('../utils/catchAsync');
 
-exports.getTrendings = catchAsync(async (req, res) => {
-    const userId = req.user.id;
-    if(!userId) {
-      console.log('no or incorrect userId');
-      res.status(404).json({
-        status:'invalid or no userId',
-      })
-    }
-    const docs = await Quiz.aggregate([
-      { $match: { createdBy: userId } },
-      { $unionWith: { coll: 'polls', pipeline: [{ $match: { createdBy: userId } }] } },
-      { $sort: { impressions: -1 } },
-      { $limit: 10 } 
-    ]);
+exports.getTrendings = catchAsync(async (req, res, next) => {
+  const quizzes = await Quiz.find({ createdBy: req.user.id });
+  const polls = await Poll.find({ createdBy: req.user.id });
+  console.log("this is quiz ",quizzes);
+  console.log("this is poll",polls);
   
-    res.status(200).json({
-      status: 'success',
-      results: docs.length,
-      data: { docs }
-    });
+  
+
+  const docs = [...quizzes, ...polls];
+
+  docs.sort((a, b) => b.impressions - a.impressions);
+
+  res.status(200).json({
+    status: 'success',
+    results: docs.length,
+    data: { docs }
   });
-
-  exports.getStats = catchAsync(async (req, res, next) => {
-    const userId = req.user.id;
-  
-    const [stats] = await Quiz.aggregate([
-      { $match: { createdBy: userId } },
-      {
-        $facet: {
-          quizzes: [
-            {
-              $group: {
-                _id: null,
-                totalQuizzes: { $sum: 1 },
-                totalQuestions: { $sum: { $size: "$questions" } },
-                totalImpressions: { $sum: "$impressions" }
-              }
-            }
-          ],
-          polls: [
-            { $match: { createdBy: userId } }, // Aggregating polls from the "Poll" collection
-            {
-              $group: {
-                _id: null,
-                totalPolls: { $sum: 1 },
-                totalQuestions: { $sum: { $size: "$questions" } },
-                totalImpressions: { $sum: "$impressions" }
-              }
-            }
-          ]
-        }
-      },
-      {
-        $project: {
-          totalQuizzesAndPolls: {
-            $sum: [
-              { $arrayElemAt: ["$quizzes.totalQuizzes", 0] },
-              { $arrayElemAt: ["$polls.totalPolls", 0] }
-            ]
-          },
-          totalQuestions: {
-            $sum: [
-              { $arrayElemAt: ["$quizzes.totalQuestions", 0] },
-              { $arrayElemAt: ["$polls.totalQuestions", 0] }
-            ]
-          },
-          totalImpressions: {
-            $sum: [
-              { $arrayElemAt: ["$quizzes.totalImpressions", 0] },
-              { $arrayElemAt: ["$polls.totalImpressions", 0] }
-            ]
-          }
-        }
-      }
-    ]);
-  
-    res.status(200).json({
-      status: 'success',
-      data: { stats }
-    });
-  });
-
-exports.getUsersPollsAndQuizzes = catchAsync(async (req,res) => {
-    const userId = req.user.id;
-
-    const docs = await Quiz.aggregate([
-        {$match: {createdBy: userId}},
-        {
-            $unionWith:{
-                coll:'polls',
-                pipeline:[{$match:{createdBy:userId}}]
-            }
-        },
-        {$sort: {createdAt: -1}}
-    ]);
-
-    res.status(200).json({
-        stats:'success',
-        results: docs.length,
-        data: {docs}
-    });
 });
-  
+
+exports.getStats = catchAsync(async (req, res, next) => {
+  const quizzes = await Quiz.find({ createdBy: req.user.id });
+  const polls = await Poll.find({ createdBy: req.user.id });
+  console.log("this is quiz ",quizzes);
+  console.log("this is poll",polls);
+
+  const stats = {};
+  stats.totalQuizzesAndPolls = quizzes.length + polls.length;
+
+  let totalQuizzesQuestions = 0;
+  let totalPollsQuestions = 0;
+
+  quizzes.forEach(quiz => {
+    totalQuizzesQuestions += quiz.questions.length;
+  });
+
+  polls.forEach(poll => {
+    totalPollsQuestions += poll.questions.length;
+  });
+
+  stats.totalQuestions = totalPollsQuestions + totalQuizzesQuestions;
+
+  let totalPollImpressions = 0;
+  let totlaQuizImpressions = 0;
+
+  quizzes.forEach(quiz => {
+    totlaQuizImpressions += quiz.impressions;
+  });
+
+  polls.forEach(poll => {
+    totalPollImpressions += poll.impressions;
+  });
+
+  stats.totalImpressions = totalPollImpressions + totlaQuizImpressions;
+
+  res.status(200).json({
+    status: 'success',
+    data: { stats }
+  });
+});
+
+exports.getUsersPollsAndQuizzes = catchAsync(async (req, res, next) => {
+  const quizzes = await Quiz.find({ createdBy: req.user.id });
+  const polls = await Poll.find({ createdBy: req.user.id });
+
+  const userDocs = [...quizzes, ...polls];
+
+  const docs = userDocs.sort((a, b) => {
+    const createdAtA = new Date(a.createdAt).getTime();
+    const createdAtB = new Date(b.createdAt).getTime();
+    return createdAtB - createdAtA;
+  });
+
+  console.log(docs);
+
+  res.status(200).json({
+    status: 'success',
+    results: docs.length,
+    data: { docs }
+  });
+});

@@ -1,0 +1,25 @@
+.meta {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .meta p {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+  
+  
+  
+  .container button {
+    margin: auto;
+    display: block;
+    margin-top: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .options {
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 3rem;
+    }
+  }
+  

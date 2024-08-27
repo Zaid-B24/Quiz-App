@@ -3,17 +3,17 @@ const { addQuiz, getQuiz, getUsersQuizzes, deleteQuiz, attemptedQuiz, updateQuiz
 const { auth } = require('../Controllers/authController');
 
 const router = express.Router();
-router.use(auth);
+
 router
     .route('/')
-    .post(addQuiz)
-    .get(getUsersQuizzes);
+    .post(auth,addQuiz)
+    .get(auth,getUsersQuizzes);
 
 router
     .route('/:id')
     .get(getQuiz)
-    .patch(updateQuiz)
-    .delete(deleteQuiz);
+    .patch(auth,updateQuiz)
+    .delete(auth,deleteQuiz);
 
 router.route('/attempt/:id').patch(attemptedQuiz);
 

@@ -1,0 +1,53 @@
+.container {
+  margin-top: 4rem;
+}
+
+.quizCards {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.card {
+  background-color: var(--neutral-color);
+  padding: 1rem;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  grid-gap: 1rem;
+  cursor: pointer;
+  transition: all 100ms ease-in-out;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.card > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 10ch;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.impressions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--accent-color);
+}
+
+.date {
+  color: var(--primary-color);
+}

@@ -1,0 +1,78 @@
+.tabs {
+  display: flex;
+  gap: 1rem;
+}
+
+.tab {
+  padding: 1rem;
+  border-radius: 3rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  composes: shadow from global;
+  position: relative;
+  cursor: pointer;
+}
+
+.selectedTab {
+  composes: tab;
+  background-color: var(--primary-color);
+  color: var(--base-color);
+}
+
+.cross {
+  border-radius: 1rem;
+  border: none;
+  composes: shadow from global;
+  display: flex;
+  padding: 0.2rem;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--base-color);
+}
+
+.addButton {
+  border: none;
+  composes: tab;
+  composes: shadow from global;
+  background-color: var(--neutral-color);
+}
+
+.list {
+  display: flex;
+  gap: 4rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.list p {
+  margin-left: auto;
+}
+
+.actions {
+  margin-top: 3rem;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.actions button {
+  flex: 1;
+}
+
+.results {
+  text-align: center;
+}
+
+.results > * {
+  margin-top: 1rem;
+}
+
+.results p {
+  padding: 1rem;
+  background-color: var(--base-color);
+}
