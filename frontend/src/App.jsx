@@ -5,7 +5,7 @@ import Dashboard from './Pages/Admin/Dashboard/Dashboard';
 import Auth from "./Pages/Authorization/Auth"
 import Poll from "./Pages/User/Poll";
 import Quiz from './Pages/User/Quiz'
-import UserLayout from './Pages/User'
+import UserLayout from './Pages/User/Index'
 import AuthProvider from "./store/AuthProvider";
 import QuizResults from './Pages/User/Quiz/QuizResult';
 import PollResults from './Pages/User/Poll/PollResults';
