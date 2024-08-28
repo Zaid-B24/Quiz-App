@@ -166,15 +166,6 @@ export default function QuizCreator({
 
   const createOrUpdateQuiz = useCallback(async () => {
     setIsProcessing(true);
-
-    const hasEmptyQuestion = quiz.questions.some(q => !q.question.trim());
-
-  if (hasEmptyQuestion) {
-    toast.error('Question required');
-    setIsProcessing(false);
-    return;
-  }
-
     let updatedQuiz = { ...quiz };
 
     // remove _id property from default quiz questions when creating a new quiz
@@ -209,7 +200,7 @@ export default function QuizCreator({
           'Content-Type': 'application/json',
         },
       });
-      
+
       if (!res.ok) {
         const errJSON = await res.json();
         console.log(errJSON);
@@ -218,7 +209,7 @@ export default function QuizCreator({
 
       if (actions !== 'update') {
         const resJson = await res.json();
-        setCreatedQuiz(resJson.data);
+        setCreatedQuiz(resJson.data.quiz);
       }
 
       toast.success('Successfully created quiz');
