@@ -40,7 +40,7 @@ export default function Login() {
   // Optimized submit handler with useCallback
   const onSubmit = useCallback(async (data) => {
     try {
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + 'auth/login', {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL + 'auth/login/', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
